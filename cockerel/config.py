@@ -17,6 +17,8 @@ class Config:
         self.director_role = config.get('Permissions', 'director_role')
         self.admin_role = config.get('Permissions', 'admin_role')
 
+        self.weatherapi = config.get('Weather', 'api')
+
 
 class ConfigDefault:
     options_file = 'config/setting.ini'

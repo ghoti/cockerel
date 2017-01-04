@@ -3,6 +3,7 @@ import asyncio
 import discord
 from discord.ext.commands.bot import _get_variable
 import pendulum
+import pyowm
 
 from functools import wraps
 
@@ -44,9 +45,26 @@ class Cockerel(discord.Client):
         except:
             pass
 
-    async def cmd_time(self):
+    async def cmd_time(self, *args):
         now = pendulum.utcnow().to_day_datetime_string()
         return 'Current UTC/EVE time: {}'.format(now)
+
+    async def cmd_weather(self, *args):
+        owm = pyowm.OWM(self.config.weatherapi)
+
+        if not args:
+            conditions = owm.weather_at_place('Reykjavik')
+        else:
+            conditions = owm.weather_at_place(' '.join(args[0]).strip())
+        if conditions:
+            return 'Current Conditions of {}: {}F/{}C and {}'.format(conditions.get_location().get_name(),
+                                                                     conditions.get_weather().get_temperature(
+                                                                         'fahrenheit')['temp'],
+                                                                     conditions.get_weather().get_temperature(
+                                                                         'celsius')['temp'],
+                                                                     conditions.get_weather().get_detailed_status())
+        else:
+            return 'City not found, try again'
 
     async def on_message(self, message):
         await self.wait_until_ready()
@@ -64,6 +82,8 @@ class Cockerel(discord.Client):
         handler = getattr(self, 'cmd_%s' % command, None)
         if not handler:
             return
+        if args:
+            return_message = await handler(args)
         else:
             return_message = await handler()
 

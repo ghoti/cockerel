@@ -9,3 +9,6 @@ cmd_prefix = !
 [Permissions]
 director_role = Director
 admin_role = Administrator
+
+[Weather]
+api =
