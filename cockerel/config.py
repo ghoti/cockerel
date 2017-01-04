@@ -12,6 +12,11 @@ class Config:
 
         self.login_token = config.get('Credentials', 'bot_token')
 
+        self.cmd_prefix = config.get('Bot', 'cmd_prefix')
+
+        self.director_role = config.get('Permissions', 'director_role')
+        self.admin_role = config.get('Permissions', 'admin_role')
+
 
 class ConfigDefault:
     options_file = 'config/setting.ini'

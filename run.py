@@ -20,7 +20,5 @@ def main():
             if not c or c.ok:
                 break
 
-
-
 if __name__ == '__main__':
     main()

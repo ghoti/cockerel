@@ -2,3 +2,10 @@
 
 [Credentials]
 bot_token =
+
+[Bot]
+cmd_prefix = !
+
+[Permissions]
+director_role = Director
+admin_role = Administrator
