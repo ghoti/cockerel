@@ -2,6 +2,7 @@ import aiohttp
 import asyncio
 import discord
 from discord.ext.commands.bot import _get_variable
+import pendulum
 
 from functools import wraps
 
@@ -44,8 +45,8 @@ class Cockerel(discord.Client):
             pass
 
     async def cmd_time(self):
-        print('time!')
-        pass
+        now = pendulum.utcnow().to_day_datetime_string()
+        return 'Current UTC/EVE time: {}'.format(now)
 
     async def on_message(self, message):
         await self.wait_until_ready()
@@ -64,7 +65,10 @@ class Cockerel(discord.Client):
         if not handler:
             return
         else:
-            await handler()
+            return_message = await handler()
+
+        if return_message:
+            await self.send_message(destination=message.channel, content=return_message)
 
 
 
