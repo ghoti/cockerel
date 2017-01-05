@@ -66,6 +66,12 @@ class Cockerel(discord.Client):
         else:
             return 'City not found, try again'
 
+    async def send_typing(self, destination):
+        try:
+            return await super().send_typing(destination)
+        except discord.Forbidden:
+            print("Could not send typing to %s, no permssion" % destination)
+
     async def on_message(self, message):
         await self.wait_until_ready()
 
@@ -82,6 +88,7 @@ class Cockerel(discord.Client):
         handler = getattr(self, 'cmd_%s' % command, None)
         if not handler:
             return
+        await self.send_typing(destination=message.channel)
         if args:
             return_message = await handler(args)
         else:
